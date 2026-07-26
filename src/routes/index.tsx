@@ -487,6 +487,60 @@ function ProgramCard({
   );
 }
 
+/* ---------- Student Work ---------- */
+function Work() {
+  const shots = [
+    { url: work1.url, label: "A-LINE · COTTON", alt: "Handmade pink A-line cotton dress by V2Wings student" },
+    { url: work2.url, label: "SALWAR KAMEEZ", alt: "Handmade rose salwar kameez with embroidery" },
+    { url: work3.url, label: "UMBRELLA · FLOW", alt: "Handmade blush umbrella dress in flowing fabric" },
+    { url: work4.url, label: "BORN BABY DRESS", alt: "Handmade baby dress with lace trim on wooden hanger" },
+  ];
+  return (
+    <section id="work" aria-label="Student work" className="scroll-mt-8 bg-blush/40">
+      <div className="mx-auto px-5 py-16 sm:px-8 sm:py-20">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4 sm:mb-12">
+          <div className="max-w-xl">
+            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
+              Student Work
+            </div>
+            <h2 className="mt-3 font-display text-3xl leading-tight sm:text-5xl">
+              Stitched at the table.
+              <br />
+              <span className="italic text-rose">Worn out into the world.</span>
+            </h2>
+          </div>
+          <p className="hidden max-w-xs text-sm text-charcoal sm:block">
+            A quiet look at pieces our students have finished — cut, pinned and sewn in-studio.
+          </p>
+        </div>
+
+        {/* Mobile: swipe carousel; md+: 4-up grid */}
+        <div className="snap-x-scroll -mx-5 flex gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 md:grid-cols-4">
+          {shots.map((s) => (
+            <figure
+              key={s.url}
+              className="group relative w-[72%] shrink-0 overflow-hidden rounded-sm bg-canvas sm:w-auto sm:shrink"
+            >
+              <div className="aspect-[3/4] overflow-hidden">
+                <img
+                  src={s.url}
+                  alt={s.alt}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                />
+              </div>
+              <figcaption className="flex items-center justify-between border-t border-ink/10 px-3 py-2 font-mono text-[10px] tracking-widest text-charcoal">
+                <span>{s.label}</span>
+                <span className="text-rose">V2W</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------- Trainer ---------- */
 function Trainer() {
   return (
