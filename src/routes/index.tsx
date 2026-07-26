@@ -7,12 +7,22 @@ import hero2 from "@/assets/hero/hero2.jpg.asset.json";
 import hero3 from "@/assets/hero/hero3.jpg.asset.json";
 import hero4 from "@/assets/hero/hero4.jpg.asset.json";
 import hero5 from "@/assets/hero/hero5.jpg.asset.json";
+import studentWork1 from "@/assets/student-work/student-work1.jpg.asset.json";
+import studentWork2 from "@/assets/student-work/student-work2.jpg.asset.json";
+import studentWork3 from "@/assets/student-work/student-work3.jpg.asset.json";
+import studentWork4 from "@/assets/student-work/student-work4.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
 const HERO_IMAGES = [hero1.url, hero2.url, hero3.url, hero4.url, hero5.url];
+const STUDENT_WORK = [
+  studentWork1.url,
+  studentWork2.url,
+  studentWork3.url,
+  studentWork4.url,
+];
 
 const PHONE = "86988 69253";
 const PHONE_TEL = "+918698869253";
@@ -605,11 +615,18 @@ function Reviews() {
             Student work
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {[1, 2, 3, 4].map((n) => (
-              <div key={n} className="relative aspect-[3/4] overflow-hidden rounded-sm bg-blush/20">
-                <UploadPlaceholder
-                  dark
-                  label={`UPLOAD: student photo ${n}`}
+            {STUDENT_WORK.map((src, i) => (
+              <div
+                key={i}
+                className="relative aspect-[3/4] overflow-hidden rounded-sm bg-blush/20"
+              >
+                <img
+                  src={src}
+                  alt={`Student garment work ${i + 1}: neckline and bodice detail`}
+                  loading="lazy"
+                  width={1024}
+                  height={1024}
+                  className="h-full w-full object-cover"
                 />
               </div>
             ))}
