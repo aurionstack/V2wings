@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/__l5e/:path*",
+      "destination": "https://id-preview--68088c1a-1052-4ace-801f-1ec97b120699.lovable.app/__l5e/:path*"
+    }
+  ]
+}
