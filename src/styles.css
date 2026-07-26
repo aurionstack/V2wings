@@ -1,5 +1,4 @@
-@import "tailwindcss" source(none);
-@source "../src";
+@import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -146,8 +145,8 @@
 }
 @keyframes hero-fade {
   0%, 16% { opacity: 0; transform: scale(1.06); }
-  4%, 20% { opacity: 0.55; transform: scale(1.03); }
-  22%, 36% { opacity: 0.55; transform: scale(1.0); }
+  4%, 20% { opacity: 0.88; transform: scale(1.03); }
+  22%, 36% { opacity: 0.88; transform: scale(1.0); }
   40%, 100% { opacity: 0; transform: scale(1.0); }
 }
 
@@ -176,7 +175,7 @@
 @media (prefers-reduced-motion: reduce) {
   .stitch-divider { animation: none; transform: none; }
   .ticker-track { animation: none; }
-  .hero-bg-slide { animation: none; opacity: 0.4; }
+  .hero-bg-slide { animation: none; opacity: 0.75; }
   .reviews-marquee { animation: none; }
   * { scroll-behavior: auto !important; }
 }

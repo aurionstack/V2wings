@@ -45,12 +45,11 @@ const SKILLS = [
 
 const SECTIONS = [
   { id: "hero", label: "0IN", full: "Start" },
-  { id: "skills", label: "6IN", full: "Skills" },
-  { id: "why", label: "12IN", full: "Why us" },
-  { id: "programs", label: "18IN", full: "Programs" },
-  { id: "trainer", label: "24IN", full: "Trainer" },
-  { id: "reviews", label: "30IN", full: "Reviews" },
-  { id: "visit", label: "36IN", full: "Visit" },
+  { id: "why", label: "6IN", full: "Why us" },
+  { id: "programs", label: "12IN", full: "Programs" },
+  { id: "trainer", label: "18IN", full: "Trainer" },
+  { id: "reviews", label: "24IN", full: "Reviews" },
+  { id: "visit", label: "30IN", full: "Visit" },
 ];
 
 function Index() {
@@ -58,7 +57,7 @@ function Index() {
     <div className="relative min-h-screen bg-canvas text-ink">
       <TapeRail />
       <TopBar />
-      <main className="lg:pl-24">
+      <main>
         <Hero />
         <StitchDivider />
         <SkillsTicker />
@@ -100,96 +99,110 @@ function TapeRail() {
   }, []);
 
   return (
-    <>
-      {/* Mobile: slim top progress bar */}
-      <div className="fixed top-0 left-0 right-0 z-40 h-[3px] bg-blush lg:hidden">
-        <div
-          className="h-full bg-rose transition-[width] duration-150"
-          style={{ width: `${progress * 100}%` }}
-        />
+    <nav
+      aria-label="Section scale navigation"
+      className="fixed left-0 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center py-3.5 sm:py-5 w-11 sm:w-16 border-y border-r border-ink/15 bg-transparent rounded-r-xl sm:rounded-r-2xl shadow-2xs transition-all hover:w-14 sm:hover:w-20 hover:bg-canvas/20 group"
+    >
+      <div className="flex flex-col items-center gap-2.5 sm:gap-3 w-full">
+        {SECTIONS.map((s) => {
+          const isActive = active === s.id;
+          return (
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              aria-label={`Scroll to ${s.full}`}
+              className="flex items-center gap-1.5 sm:gap-2 py-1 sm:py-1.5 px-1.5 sm:px-2.5 transition-all w-full group/item"
+            >
+              <span
+                className={`h-0.5 transition-all ${
+                  isActive ? "bg-rose w-4 sm:w-6 shadow-[0_0_6px_rgba(214,51,108,0.6)]" : "bg-ink/30 w-2.5 sm:w-3.5 group-hover/item:bg-ink"
+                }`}
+              />
+              <span
+                className={`font-mono text-[9px] sm:text-[10px] tracking-tight sm:tracking-widest transition-colors ${
+                  isActive ? "text-rose font-bold scale-105" : "text-charcoal group-hover/item:text-ink"
+                }`}
+              >
+                {s.label.replace("IN", '"')}
+              </span>
+            </a>
+          );
+        })}
       </div>
-
-      {/* Desktop: vertical tape rail */}
-      <aside
-        aria-label="Section navigation"
-        className="fixed left-0 top-0 z-40 hidden h-screen w-24 flex-col items-stretch border-r border-ink/10 bg-canvas/80 backdrop-blur-sm lg:flex"
-      >
-        <div className="flex items-center justify-center border-b border-ink/10 py-4">
-          <span className="font-mono text-[10px] tracking-widest text-charcoal">V2W · IN</span>
-        </div>
-        <div className="relative flex-1 overflow-hidden">
-          {/* inch tick marks background */}
-          <div className="absolute inset-y-0 left-6 flex w-14 flex-col justify-between py-6">
-            {Array.from({ length: 40 }).map((_, i) => (
-              <div key={i} className={`tape-mark ${i % 4 === 0 ? "long" : "short"}`} />
-            ))}
-          </div>
-          {/* fill */}
-          <div
-            aria-hidden
-            className="absolute left-0 top-0 w-full bg-rose/8"
-            style={{ height: `${progress * 100}%` }}
-          />
-          {/* section anchors */}
-          <nav className="relative flex h-full flex-col justify-between py-4">
-            {SECTIONS.map((s) => {
-              const isActive = active === s.id;
-              return (
-                <a
-                  key={s.id}
-                  href={`#${s.id}`}
-                  className="group flex items-center gap-2 pl-3 pr-2"
-                >
-                  <span
-                    className={`h-px w-6 transition-all ${
-                      isActive ? "bg-rose w-10" : "bg-ink/40 group-hover:bg-ink"
-                    }`}
-                  />
-                  <span
-                    className={`font-mono text-[10px] tracking-widest transition-colors ${
-                      isActive ? "text-rose" : "text-charcoal group-hover:text-ink"
-                    }`}
-                  >
-                    {s.label}
-                  </span>
-                </a>
-              );
-            })}
-          </nav>
-        </div>
-      </aside>
-    </>
+    </nav>
   );
 }
 
 /* ---------- Top bar ---------- */
 function TopBar() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
-    <header className="relative z-30 border-b border-ink/10 lg:pl-24">
-      <div className="mx-auto grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-4 sm:px-8">
-        <a href="#hero" className="flex min-w-0 items-center gap-3">
+    <header className="sticky top-0 z-30 border-b border-ink/10 bg-canvas/95 backdrop-blur-md transition-all">
+      <div className="mx-auto flex items-center justify-between gap-4 px-5 py-3.5 sm:px-8">
+        <a href="#hero" className="flex min-w-0 items-center gap-3 group">
           <img
             src={logo.url}
             alt="V2Wings Coaching logo"
-            className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-ink/10"
+            className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-ink/15 transition-transform duration-300 group-hover:scale-105"
           />
           <div className="min-w-0 leading-tight">
-            <div className="truncate font-display text-lg text-ink">V2Wings Coaching</div>
+            <div className="truncate font-display text-lg text-ink tracking-tight group-hover:text-rose transition-colors">V2Wings Coaching</div>
             <div className="font-mono text-[10px] tracking-widest text-charcoal">
               MARGAO · GOA
             </div>
           </div>
         </a>
-        <a
-          href={wa("Hi Vandana ma'am, I'd like to know more about your dress making classes.")}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex shrink-0 items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-medium text-canvas transition-colors hover:bg-rose"
-        >
-          WhatsApp
-          <span aria-hidden className="font-mono text-[11px]">→</span>
-        </a>
+
+        {/* Desktop Navigation Links */}
+        <nav aria-label="Main Navigation" className="hidden lg:flex items-center gap-6 font-mono text-xs tracking-widest text-charcoal uppercase">
+          <a href="#why" className="hover:text-rose transition-colors py-1">Why Us</a>
+          <a href="#programs" className="hover:text-rose transition-colors py-1">Programs</a>
+          <a href="#trainer" className="hover:text-rose transition-colors py-1">Trainer</a>
+          <a href="#reviews" className="hover:text-rose transition-colors py-1">Reviews</a>
+          <a href="#visit" className="font-semibold text-ink hover:text-rose transition-colors py-1">Visit Studio</a>
+        </nav>
+
+        {/* Action Controls */}
+        <div className="flex items-center gap-3">
+          <a
+            href={wa("Hi Vandana ma'am, I'd like to know more about your dress making classes.")}
+            target="_blank"
+            rel="noreferrer"
+            className="hidden md:inline-flex shrink-0 items-center gap-2 rounded-full bg-ink px-4.5 py-2 text-xs sm:text-sm font-medium text-canvas transition-colors hover:bg-rose shadow-2xs hover:shadow-sm"
+          >
+            <span>WhatsApp Us</span>
+            <span aria-hidden className="font-mono text-[11px]">→</span>
+          </a>
+
+          {/* Mobile menu toggle */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle navigation menu"
+            className="inline-flex items-center justify-center rounded-full border border-ink/20 p-2 text-ink transition-colors hover:bg-ink/5 lg:hidden"
+          >
+            {mobileMenuOpen ? (
+              <span aria-hidden className="font-mono text-sm leading-none px-1.5">×</span>
+            ) : (
+              <span aria-hidden className="font-mono text-xs leading-none px-1.5">☰</span>
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Navigation Dropdown */}
+      {mobileMenuOpen && (
+        <nav aria-label="Mobile Navigation" className="border-t border-ink/10 bg-canvas px-5 py-4 sm:px-8 lg:hidden shadow-lg animate-in slide-in-from-top duration-200">
+          <ul className="flex flex-col gap-3 font-mono text-xs tracking-widest uppercase">
+            <li><a href="#why" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-charcoal hover:text-rose transition-colors">Why Us</a></li>
+            <li><a href="#programs" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-charcoal hover:text-rose transition-colors">Programs</a></li>
+            <li><a href="#trainer" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-charcoal hover:text-rose transition-colors">Trainer</a></li>
+            <li><a href="#reviews" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-charcoal hover:text-rose transition-colors">Reviews</a></li>
+            <li><a href="#visit" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 font-semibold text-ink hover:text-rose transition-colors">📍 Visit Studio & Contact</a></li>
+          </ul>
+        </nav>
+      )}
     </header>
   );
 }
@@ -197,9 +210,9 @@ function TopBar() {
 /* ---------- Hero ---------- */
 function Hero() {
   return (
-    <section id="hero" className="relative scroll-mt-8 overflow-hidden">
+    <section id="hero" className="relative scroll-mt-8 overflow-hidden bg-ink">
       {/* Background carousel */}
-      <div aria-hidden className="absolute inset-0 bg-ink">
+      <div aria-hidden className="absolute inset-0">
         {HERO_IMAGES.map((url, i) => (
           <div
             key={url}
@@ -210,16 +223,17 @@ function Hero() {
             }}
           />
         ))}
-        {/* Editorial overlay: soft gradient for legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-canvas/85 via-canvas/60 to-canvas/95 md:bg-gradient-to-r md:from-canvas/95 md:via-canvas/75 md:to-canvas/20" />
+        {/* Subtle ambient overlay over photography (90% transparent across all viewports) */}
+        <div className="absolute inset-0 bg-canvas/10 pointer-events-none" />
       </div>
 
-      <div className="relative mx-auto grid gap-8 px-5 py-20 sm:px-8 md:min-h-[640px] md:grid-cols-2 md:gap-10 md:py-28">
-        <div className="flex flex-col justify-center">
-          <div className="mb-5 font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
+      <div className="relative mx-auto grid gap-6 px-5 py-8 sm:px-8 md:min-h-[580px] md:grid-cols-2 md:gap-10 md:py-16">
+        {/* Editorial typography scrim card for guaranteed AA+ legibility over full-bleed imagery */}
+        <div className="flex flex-col justify-center rounded-2xl bg-canvas/90 backdrop-blur-md p-6 sm:p-7 md:p-8 border border-ink/10 shadow-lg my-auto">
+          <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
             Fashion & Dress&nbsp;Making · Margao
           </div>
-          <h1 className="font-display text-[2.4rem] leading-[1.02] tracking-tight text-ink sm:text-6xl">
+          <h1 className="font-display text-[2.3rem] leading-[1.05] tracking-tight text-ink sm:text-5xl lg:text-6xl">
             Learn to stitch.
             <br />
             Practice to create.
@@ -229,34 +243,34 @@ function Hero() {
           <p className="mt-5 max-w-md text-sm leading-relaxed text-charcoal sm:text-base">
             Small-batch classes in Pajifond, taught hands-on by Vandana ma'am.
           </p>
-          <div className="mt-7 flex flex-wrap items-center gap-3 sm:gap-4">
+          <div className="mt-7 flex flex-wrap items-center gap-4">
             <a
               href={wa("Hi Vandana ma'am, I'd like to join a dress making class at V2Wings.")}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-rose px-5 py-3 text-sm font-medium text-canvas transition-transform hover:bg-ink"
+              className="inline-flex items-center gap-2 rounded-full bg-rose px-6 py-3.5 text-sm font-medium text-canvas transition-all hover:bg-ink shadow-sm hover:shadow-md"
             >
-              WhatsApp us
+              <span>WhatsApp Us</span>
               <span aria-hidden>→</span>
             </a>
             <a
               href={`tel:${PHONE_TEL}`}
-              className="text-sm text-ink underline decoration-thread-gold decoration-2 underline-offset-4 hover:text-rose"
+              className="text-sm font-medium text-ink underline decoration-thread-gold decoration-2 underline-offset-4 hover:text-rose transition-colors"
             >
               Call <span className="font-mono">{PHONE}</span>
             </a>
           </div>
-          <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-charcoal">
-            <span className="inline-flex items-center gap-1.5">
-              <span className="font-mono text-thread-gold">★ 4.9</span> Google
+          <div className="mt-8 pt-6 border-t border-ink/10 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-charcoal">
+            <span className="inline-flex items-center gap-1.5 font-medium">
+              <span className="font-mono text-thread-gold font-bold">★ 4.9</span> Google Rating
             </span>
             <span aria-hidden className="h-3 w-px bg-ink/20" />
-            <span>Mon–Sat · 9:00</span>
+            <span>Mon–Sat · 9:00 AM</span>
             <span aria-hidden className="h-3 w-px bg-ink/20" />
             <span>Pajifond, Margao</span>
           </div>
         </div>
-        {/* Right column intentionally empty on md+ so the background image is visible */}
+        {/* Right column empty to let fashion photography stand out full-bleed */}
         <div aria-hidden className="hidden md:block" />
       </div>
     </section>
