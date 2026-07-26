@@ -17,6 +17,12 @@ export const Route = createFileRoute("/")({
 });
 
 const HERO_IMAGES = [hero1.url, hero2.url, hero3.url, hero4.url, hero5.url];
+const STUDENT_WORK = [
+  studentWork1.url,
+  studentWork2.url,
+  studentWork3.url,
+  studentWork4.url,
+];
 
 const PHONE = "86988 69253";
 const PHONE_TEL = "+918698869253";
