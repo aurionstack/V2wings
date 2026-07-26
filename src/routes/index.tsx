@@ -378,25 +378,31 @@ function Programs() {
 
   return (
     <section id="programs" className="scroll-mt-8">
-      <div className="mx-auto px-5 py-20 sm:px-8">
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+      <div className="mx-auto px-5 py-16 sm:px-8 sm:py-20">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4 sm:mb-12 sm:gap-6">
           <div className="max-w-xl">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
               Programs & Pricing
             </div>
             <h2 className="mt-3 font-display text-3xl leading-tight sm:text-5xl">
-              Three tags. Pick the one your hands are ready for.
+              Three tags. Pick your fit.
             </h2>
           </div>
-          <p className="max-w-sm text-sm text-charcoal">
+          <p className="hidden max-w-sm text-sm text-charcoal sm:block">
             Every enquiry goes straight to Vandana ma'am on WhatsApp — she'll walk you through
             timing, batch size and what to bring.
           </p>
+          <p className="text-xs text-charcoal sm:hidden">
+            Swipe →&nbsp; Every enquiry goes to Vandana ma'am on WhatsApp.
+          </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        {/* Mobile: horizontal snap carousel; md+: grid */}
+        <div className="snap-x-scroll -mx-5 flex gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:grid-cols-1 sm:gap-6 sm:overflow-visible sm:px-0 md:grid-cols-3">
           {cards.map((c) => (
-            <ProgramCard key={c.title} {...c} />
+            <div key={c.title} className="w-[85%] shrink-0 sm:w-auto sm:shrink">
+              <ProgramCard {...c} />
+            </div>
           ))}
         </div>
       </div>
