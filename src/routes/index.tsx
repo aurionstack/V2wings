@@ -1,5 +1,58 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, type ReactNode, type CSSProperties } from "react";
+
+/* ---------- Professional Editorial Scroll Reveal Component ---------- */
+interface RevealProps {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  direction?: "up" | "down" | "left" | "right" | "fade" | "scale";
+}
+
+function Reveal({ children, className = "", delay = 0, direction = "up" }: RevealProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const domRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = domRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const getTransform = () => {
+    if (isVisible) return "translate3d(0, 0, 0) scale(1)";
+    if (direction === "up") return "translate3d(0, 36px, 0) scale(0.98)";
+    if (direction === "down") return "translate3d(0, -36px, 0) scale(1)";
+    if (direction === "left") return "translate3d(36px, 0, 0) scale(1)";
+    if (direction === "right") return "translate3d(-36px, 0, 0) scale(1)";
+    if (direction === "scale") return "translate3d(0, 0, 0) scale(0.93)";
+    return "translate3d(0, 0, 0) scale(1)";
+  };
+
+  const style: CSSProperties = {
+    opacity: isVisible ? 1 : 0,
+    transform: getTransform(),
+    transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+    willChange: "opacity, transform",
+  };
+
+  return (
+    <div ref={domRef} style={style} className={className}>
+      {children}
+    </div>
+  );
+}
+
 import logo from "@/assets/v2wings-logo.jpg.asset.json";
 import trainer from "@/assets/master-trainer.png.asset.json";
 import hero1 from "@/assets/hero/hero1.jpg.asset.json";
@@ -319,7 +372,7 @@ function Why() {
   return (
     <section id="why" className="scroll-mt-8 bg-blush/60">
       <div className="mx-auto px-5 py-20 sm:px-8">
-        <div className="mb-12 max-w-2xl">
+        <Reveal direction="up" className="mb-12 max-w-2xl">
           <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
             Why V2Wings
           </div>
@@ -327,22 +380,23 @@ function Why() {
             A studio that teaches like an <em className="not-italic text-rose">atelier</em>, priced
             like a neighbourhood class.
           </h2>
-        </div>
+        </Reveal>
         <div className="grid gap-6 md:grid-cols-3">
-          {pillars.map((p) => (
-            <article
-              key={p.title}
-              className="rounded-md border border-ink/10 bg-canvas p-7"
-            >
-              <div className="mb-6 flex items-center justify-between">
-                <span className="font-mono text-[11px] tracking-widest text-rose">{p.mark}</span>
-                <span className="font-mono text-[10px] tracking-widest text-charcoal">
-                  V2W · PILLAR
-                </span>
-              </div>
-              <h3 className="font-display text-2xl leading-snug">{p.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-charcoal">{p.body}</p>
-            </article>
+          {pillars.map((p, i) => (
+            <Reveal key={p.title} direction="up" delay={i * 150} className="h-full">
+              <article
+                className="h-full rounded-md border border-ink/10 bg-canvas p-7 transition-all duration-300 hover:shadow-lg hover:-translate-y-1.5"
+              >
+                <div className="mb-6 flex items-center justify-between">
+                  <span className="font-mono text-[11px] tracking-widest text-rose">{p.mark}</span>
+                  <span className="font-mono text-[10px] tracking-widest text-charcoal">
+                    V2W · PILLAR
+                  </span>
+                </div>
+                <h3 className="font-display text-2xl leading-snug">{p.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-charcoal">{p.body}</p>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -404,7 +458,7 @@ function Programs() {
   return (
     <section id="programs" className="scroll-mt-8">
       <div className="mx-auto px-5 py-16 sm:px-8 sm:py-20">
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-4 sm:mb-12 sm:gap-6">
+        <Reveal direction="up" className="mb-8 flex flex-wrap items-end justify-between gap-4 sm:mb-12 sm:gap-6">
           <div className="max-w-xl">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
               Programs & Pricing
@@ -420,14 +474,14 @@ function Programs() {
           <p className="text-xs text-charcoal sm:hidden">
             Swipe →&nbsp; Every enquiry goes to Vandana ma'am on WhatsApp.
           </p>
-        </div>
+        </Reveal>
 
         {/* Mobile: horizontal snap carousel; md+: grid */}
         <div className="snap-x-scroll -mx-5 flex gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:grid-cols-1 sm:gap-6 sm:overflow-visible sm:px-0 md:grid-cols-3">
-          {cards.map((c) => (
-            <div key={c.title} className="w-[85%] shrink-0 sm:w-auto sm:shrink">
+          {cards.map((c, i) => (
+            <Reveal key={c.title} direction="up" delay={i * 150} className="w-[85%] shrink-0 sm:w-auto sm:shrink h-full">
               <ProgramCard {...c} />
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -472,7 +526,7 @@ function ProgramCard({
         : "bg-rose text-canvas hover:bg-ink";
 
   return (
-    <article className={`swatch-tag flex flex-col border p-7 pt-14 ${toneStyles}`}>
+    <article className={`swatch-tag flex flex-col border p-7 pt-14 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 ${toneStyles}`}>
       <div className="mb-5">
         <div className={`font-mono text-[10px] tracking-widest ${tone === "ink" ? "text-blush" : "text-charcoal"}`}>
           {eyebrow}
@@ -511,20 +565,20 @@ function Trainer() {
   return (
     <section id="trainer" className="scroll-mt-8">
       <div className="mx-auto grid gap-10 px-5 py-20 sm:px-8 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-        <div className="relative">
+        <Reveal direction="scale" className="relative">
           <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-ink">
             <img
               src={trainer.url}
               alt="Vandana ma'am, master trainer at V2Wings Coaching"
-              className="h-full w-full object-cover object-top"
+              className="h-full w-full object-cover object-top transition-transform duration-700 hover:scale-105"
               loading="lazy"
             />
           </div>
-          <div className="absolute -bottom-3 left-3 rounded-full bg-thread-gold px-3 py-1 font-mono text-[10px] tracking-widest text-ink">
+          <div className="absolute -bottom-3 left-3 rounded-full bg-thread-gold px-3 py-1 font-mono text-[10px] tracking-widest text-ink shadow-md">
             MASTER · TRAINER
           </div>
-        </div>
-        <div className="flex flex-col justify-center">
+        </Reveal>
+        <Reveal direction="up" delay={200} className="flex flex-col justify-center">
           <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
             Meet your trainer
           </div>
@@ -538,7 +592,7 @@ function Trainer() {
           <p className="mt-4 text-sm text-charcoal">
             Paraphrased from student sentiment on Google reviews.
           </p>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -569,7 +623,7 @@ function Reviews() {
     <section id="reviews" className="scroll-mt-8 bg-ink text-canvas">
       <div className="mx-auto px-5 py-16 sm:px-8 sm:py-20">
         <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] md:gap-10">
-          <div>
+          <Reveal direction="up">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-blush">
               Student results
             </div>
@@ -584,23 +638,25 @@ function Reviews() {
               href="https://www.google.com/search?q=V2Wings+Coaching+Margao"
               target="_blank"
               rel="noreferrer"
-              className="mt-5 inline-flex items-center gap-2 rounded-full border border-blush/40 px-4 py-2 text-xs text-canvas hover:border-thread-gold hover:text-thread-gold"
+              className="mt-5 inline-flex items-center gap-2 rounded-full border border-blush/40 px-4 py-2 text-xs text-canvas hover:border-thread-gold hover:text-thread-gold transition-all"
             >
               Read on Google →
             </a>
-          </div>
+          </Reveal>
 
           {/* Desktop: stacked quotes */}
           <div className="hidden gap-6 md:grid">
             {quotes.slice(0, 2).map((q, i) => (
-              <figure key={i} className="border-l-2 border-thread-gold pl-5">
-                <blockquote className="font-display text-2xl leading-snug text-canvas sm:text-3xl">
-                  "{q.body}"
-                </blockquote>
-                <figcaption className="mt-3 font-mono text-[11px] tracking-widest text-blush/70">
-                  {q.who}
-                </figcaption>
-              </figure>
+              <Reveal key={i} direction="left" delay={i * 200}>
+                <figure className="border-l-2 border-thread-gold pl-5 transition-transform duration-300 hover:translate-x-1">
+                  <blockquote className="font-display text-2xl leading-snug text-canvas sm:text-3xl">
+                    "{q.body}"
+                  </blockquote>
+                  <figcaption className="mt-3 font-mono text-[11px] tracking-widest text-blush/70">
+                    {q.who}
+                  </figcaption>
+                </figure>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -625,24 +681,25 @@ function Reviews() {
         </div>
 
         <div className="mt-14 sm:mt-16">
-          <div className="mb-4 font-mono text-[11px] uppercase tracking-widest text-blush">
+          <Reveal direction="up" className="mb-4 font-mono text-[11px] uppercase tracking-widest text-blush">
             Student work
-          </div>
+          </Reveal>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {STUDENT_WORK.map((src, i) => (
-              <div
-                key={i}
-                className="relative aspect-[3/4] overflow-hidden rounded-sm bg-blush/20"
-              >
-                <img
-                  src={src}
-                  alt={`Student garment work ${i + 1}: neckline and bodice detail`}
-                  loading="lazy"
-                  width={1024}
-                  height={1024}
-                  className="h-full w-full object-cover"
-                />
-              </div>
+              <Reveal key={i} direction="scale" delay={i * 120}>
+                <div
+                  className="relative aspect-[3/4] overflow-hidden rounded-sm bg-blush/20 transition-transform duration-500 hover:scale-[1.04] hover:shadow-2xl cursor-pointer"
+                >
+                  <img
+                    src={src}
+                    alt={`Student garment work ${i + 1}: neckline and bodice detail`}
+                    loading="lazy"
+                    width={1024}
+                    height={1024}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -656,7 +713,7 @@ function Visit() {
   return (
     <section id="visit" className="scroll-mt-8">
       <div className="mx-auto grid gap-10 px-5 py-20 sm:px-8 md:grid-cols-2">
-        <div>
+        <Reveal direction="up">
           <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
             Visit the studio
           </div>
@@ -688,7 +745,7 @@ function Visit() {
               <dd className="mt-2 flex flex-wrap gap-3">
                 <a
                   href={`tel:${PHONE_TEL}`}
-                  className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm text-canvas hover:bg-rose"
+                  className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm text-canvas hover:bg-rose shadow-2xs hover:shadow-md transition-all"
                 >
                   Call <span className="font-mono">{PHONE}</span>
                 </a>
@@ -696,7 +753,7 @@ function Visit() {
                   href={wa("Hi Vandana ma'am, I'd like to visit V2Wings.")}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-rose px-4 py-2 text-sm text-canvas hover:bg-ink"
+                  className="inline-flex items-center gap-2 rounded-full bg-rose px-4 py-2 text-sm text-canvas hover:bg-ink shadow-2xs hover:shadow-md transition-all"
                 >
                   WhatsApp
                 </a>
@@ -704,20 +761,20 @@ function Visit() {
                   href={IG}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-ink/20 px-4 py-2 text-sm text-ink hover:border-rose hover:text-rose"
+                  className="inline-flex items-center gap-2 rounded-full border border-ink/20 px-4 py-2 text-sm text-ink hover:border-rose hover:text-rose transition-colors"
                 >
                   @v2wingscoaching_margao
                 </a>
               </dd>
             </div>
           </dl>
-        </div>
+        </Reveal>
 
-        <div className="relative">
+        <Reveal direction="scale" delay={200} className="relative">
           <div className="mb-2 font-mono text-[10px] tracking-widest text-charcoal">
             PLATE 02 · LOCATION
           </div>
-          <div className="aspect-[4/5] w-full overflow-hidden rounded-sm border border-ink/10">
+          <div className="aspect-[4/5] w-full overflow-hidden rounded-sm border border-ink/10 shadow-lg hover:shadow-2xl transition-shadow duration-500">
             <iframe
               title="V2Wings Coaching location on Google Maps"
               src={MAPS_EMBED}
@@ -726,7 +783,7 @@ function Visit() {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
