@@ -186,31 +186,46 @@ function TopBar() {
 /* ---------- Hero ---------- */
 function Hero() {
   return (
-    <section id="hero" className="scroll-mt-8">
-      <div className="mx-auto grid gap-12 px-5 py-14 sm:px-8 md:grid-cols-2 md:gap-10 md:py-24 lg:py-28">
+    <section id="hero" className="relative scroll-mt-8 overflow-hidden">
+      {/* Background carousel */}
+      <div aria-hidden className="absolute inset-0 bg-ink">
+        {HERO_IMAGES.map((url, i) => (
+          <div
+            key={url}
+            className="hero-bg-slide"
+            style={{
+              backgroundImage: `url(${url})`,
+              animationDelay: `${i * 6}s`,
+            }}
+          />
+        ))}
+        {/* Editorial overlay: soft gradient for legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-canvas/85 via-canvas/60 to-canvas/95 md:bg-gradient-to-r md:from-canvas/95 md:via-canvas/75 md:to-canvas/20" />
+      </div>
+
+      <div className="relative mx-auto grid gap-8 px-5 py-20 sm:px-8 md:min-h-[640px] md:grid-cols-2 md:gap-10 md:py-28">
         <div className="flex flex-col justify-center">
-          <div className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
-            Margao's Fashion & Dress&nbsp;Making Institute
+          <div className="mb-5 font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
+            Fashion & Dress&nbsp;Making · Margao
           </div>
-          <h1 className="font-display text-[2.6rem] leading-[1.02] tracking-tight text-ink sm:text-6xl">
+          <h1 className="font-display text-[2.4rem] leading-[1.02] tracking-tight text-ink sm:text-6xl">
             Learn to stitch.
             <br />
             Practice to create.
             <br />
-            <span className="italic text-rose">Grow into your own boutique.</span>
+            <span className="italic text-rose">Grow your own boutique.</span>
           </h1>
-          <p className="mt-6 max-w-lg text-base leading-relaxed text-charcoal">
-            Small-batch classes in Pajifond, taught hands-on by Vandana ma'am — from your first
-            straight seam to running your own label.
+          <p className="mt-5 max-w-md text-sm leading-relaxed text-charcoal sm:text-base">
+            Small-batch classes in Pajifond, taught hands-on by Vandana ma'am.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-4">
+          <div className="mt-7 flex flex-wrap items-center gap-3 sm:gap-4">
             <a
               href={wa("Hi Vandana ma'am, I'd like to join a dress making class at V2Wings.")}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-rose px-6 py-3 text-sm font-medium text-canvas transition-transform hover:bg-ink"
+              className="inline-flex items-center gap-2 rounded-full bg-rose px-5 py-3 text-sm font-medium text-canvas transition-transform hover:bg-ink"
             >
-              Message us on WhatsApp
+              WhatsApp us
               <span aria-hidden>→</span>
             </a>
             <a
@@ -220,30 +235,18 @@ function Hero() {
               Call <span className="font-mono">{PHONE}</span>
             </a>
           </div>
-          <div className="mt-10 flex flex-wrap items-center gap-5 text-xs text-charcoal">
-            <span className="inline-flex items-center gap-2">
-              <span className="font-mono text-thread-gold">★ 4.9</span> on Google
+          <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-charcoal">
+            <span className="inline-flex items-center gap-1.5">
+              <span className="font-mono text-thread-gold">★ 4.9</span> Google
             </span>
             <span aria-hidden className="h-3 w-px bg-ink/20" />
-            <span>Opens 9:00 Mon–Sat</span>
+            <span>Mon–Sat · 9:00</span>
             <span aria-hidden className="h-3 w-px bg-ink/20" />
             <span>Pajifond, Margao</span>
           </div>
         </div>
-
-        {/* Editorial image slot */}
-        <div className="relative">
-          <div className="absolute -left-4 -top-4 hidden font-mono text-[10px] tracking-widest text-charcoal md:block">
-            PLATE 01 · DRESSFORM
-          </div>
-          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-blush">
-            <UploadPlaceholder label="UPLOAD: hero photo — dress on mannequin with measuring tape draped over" />
-            <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-ink/10" />
-          </div>
-          <div className="absolute -bottom-4 right-2 rounded-full bg-ink px-3 py-1 font-mono text-[10px] tracking-widest text-canvas">
-            HAND-STITCHED · SINCE&nbsp;DAY&nbsp;ONE
-          </div>
-        </div>
+        {/* Right column intentionally empty on md+ so the background image is visible */}
+        <div aria-hidden className="hidden md:block" />
       </div>
     </section>
   );
