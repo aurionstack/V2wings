@@ -7,6 +7,10 @@ import hero2 from "@/assets/hero/hero2.jpg.asset.json";
 import hero3 from "@/assets/hero/hero3.jpg.asset.json";
 import hero4 from "@/assets/hero/hero4.jpg.asset.json";
 import hero5 from "@/assets/hero/hero5.jpg.asset.json";
+import work1 from "@/assets/work/work1.jpg.asset.json";
+import work2 from "@/assets/work/work2.jpg.asset.json";
+import work3 from "@/assets/work/work3.jpg.asset.json";
+import work4 from "@/assets/work/work4.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -201,7 +205,7 @@ function Hero() {
           />
         ))}
         {/* Editorial overlay: soft gradient for legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-canvas/85 via-canvas/60 to-canvas/95 md:bg-gradient-to-r md:from-canvas/95 md:via-canvas/75 md:to-canvas/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-canvas/70 via-canvas/30 to-canvas/80 md:bg-gradient-to-r md:from-canvas/85 md:via-canvas/45 md:to-transparent" />
       </div>
 
       <div className="relative mx-auto grid gap-8 px-5 py-20 sm:px-8 md:min-h-[640px] md:grid-cols-2 md:gap-10 md:py-28">
