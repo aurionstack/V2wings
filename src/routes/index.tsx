@@ -1,10 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import logo from "@/assets/v2wings-logo.jpg.asset.json";
+import hero1 from "@/assets/hero/hero1.jpg.asset.json";
+import hero2 from "@/assets/hero/hero2.jpg.asset.json";
+import hero3 from "@/assets/hero/hero3.jpg.asset.json";
+import hero4 from "@/assets/hero/hero4.jpg.asset.json";
+import hero5 from "@/assets/hero/hero5.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
+
+const HERO_IMAGES = [hero1.url, hero2.url, hero3.url, hero4.url, hero5.url];
 
 const PHONE = "86988 69253";
 const PHONE_TEL = "+918698869253";
@@ -179,31 +186,46 @@ function TopBar() {
 /* ---------- Hero ---------- */
 function Hero() {
   return (
-    <section id="hero" className="scroll-mt-8">
-      <div className="mx-auto grid gap-12 px-5 py-14 sm:px-8 md:grid-cols-2 md:gap-10 md:py-24 lg:py-28">
+    <section id="hero" className="relative scroll-mt-8 overflow-hidden">
+      {/* Background carousel */}
+      <div aria-hidden className="absolute inset-0 bg-ink">
+        {HERO_IMAGES.map((url, i) => (
+          <div
+            key={url}
+            className="hero-bg-slide"
+            style={{
+              backgroundImage: `url(${url})`,
+              animationDelay: `${i * 6}s`,
+            }}
+          />
+        ))}
+        {/* Editorial overlay: soft gradient for legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-canvas/85 via-canvas/60 to-canvas/95 md:bg-gradient-to-r md:from-canvas/95 md:via-canvas/75 md:to-canvas/20" />
+      </div>
+
+      <div className="relative mx-auto grid gap-8 px-5 py-20 sm:px-8 md:min-h-[640px] md:grid-cols-2 md:gap-10 md:py-28">
         <div className="flex flex-col justify-center">
-          <div className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
-            Margao's Fashion & Dress&nbsp;Making Institute
+          <div className="mb-5 font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
+            Fashion & Dress&nbsp;Making · Margao
           </div>
-          <h1 className="font-display text-[2.6rem] leading-[1.02] tracking-tight text-ink sm:text-6xl">
+          <h1 className="font-display text-[2.4rem] leading-[1.02] tracking-tight text-ink sm:text-6xl">
             Learn to stitch.
             <br />
             Practice to create.
             <br />
-            <span className="italic text-rose">Grow into your own boutique.</span>
+            <span className="italic text-rose">Grow your own boutique.</span>
           </h1>
-          <p className="mt-6 max-w-lg text-base leading-relaxed text-charcoal">
-            Small-batch classes in Pajifond, taught hands-on by Vandana ma'am — from your first
-            straight seam to running your own label.
+          <p className="mt-5 max-w-md text-sm leading-relaxed text-charcoal sm:text-base">
+            Small-batch classes in Pajifond, taught hands-on by Vandana ma'am.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-4">
+          <div className="mt-7 flex flex-wrap items-center gap-3 sm:gap-4">
             <a
               href={wa("Hi Vandana ma'am, I'd like to join a dress making class at V2Wings.")}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-rose px-6 py-3 text-sm font-medium text-canvas transition-transform hover:bg-ink"
+              className="inline-flex items-center gap-2 rounded-full bg-rose px-5 py-3 text-sm font-medium text-canvas transition-transform hover:bg-ink"
             >
-              Message us on WhatsApp
+              WhatsApp us
               <span aria-hidden>→</span>
             </a>
             <a
@@ -213,30 +235,18 @@ function Hero() {
               Call <span className="font-mono">{PHONE}</span>
             </a>
           </div>
-          <div className="mt-10 flex flex-wrap items-center gap-5 text-xs text-charcoal">
-            <span className="inline-flex items-center gap-2">
-              <span className="font-mono text-thread-gold">★ 4.9</span> on Google
+          <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-charcoal">
+            <span className="inline-flex items-center gap-1.5">
+              <span className="font-mono text-thread-gold">★ 4.9</span> Google
             </span>
             <span aria-hidden className="h-3 w-px bg-ink/20" />
-            <span>Opens 9:00 Mon–Sat</span>
+            <span>Mon–Sat · 9:00</span>
             <span aria-hidden className="h-3 w-px bg-ink/20" />
             <span>Pajifond, Margao</span>
           </div>
         </div>
-
-        {/* Editorial image slot */}
-        <div className="relative">
-          <div className="absolute -left-4 -top-4 hidden font-mono text-[10px] tracking-widest text-charcoal md:block">
-            PLATE 01 · DRESSFORM
-          </div>
-          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-blush">
-            <UploadPlaceholder label="UPLOAD: hero photo — dress on mannequin with measuring tape draped over" />
-            <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-ink/10" />
-          </div>
-          <div className="absolute -bottom-4 right-2 rounded-full bg-ink px-3 py-1 font-mono text-[10px] tracking-widest text-canvas">
-            HAND-STITCHED · SINCE&nbsp;DAY&nbsp;ONE
-          </div>
-        </div>
+        {/* Right column intentionally empty on md+ so the background image is visible */}
+        <div aria-hidden className="hidden md:block" />
       </div>
     </section>
   );
@@ -368,25 +378,31 @@ function Programs() {
 
   return (
     <section id="programs" className="scroll-mt-8">
-      <div className="mx-auto px-5 py-20 sm:px-8">
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+      <div className="mx-auto px-5 py-16 sm:px-8 sm:py-20">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4 sm:mb-12 sm:gap-6">
           <div className="max-w-xl">
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal">
               Programs & Pricing
             </div>
             <h2 className="mt-3 font-display text-3xl leading-tight sm:text-5xl">
-              Three tags. Pick the one your hands are ready for.
+              Three tags. Pick your fit.
             </h2>
           </div>
-          <p className="max-w-sm text-sm text-charcoal">
+          <p className="hidden max-w-sm text-sm text-charcoal sm:block">
             Every enquiry goes straight to Vandana ma'am on WhatsApp — she'll walk you through
             timing, batch size and what to bring.
           </p>
+          <p className="text-xs text-charcoal sm:hidden">
+            Swipe →&nbsp; Every enquiry goes to Vandana ma'am on WhatsApp.
+          </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        {/* Mobile: horizontal snap carousel; md+: grid */}
+        <div className="snap-x-scroll -mx-5 flex gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:grid-cols-1 sm:gap-6 sm:overflow-visible sm:px-0 md:grid-cols-3">
           {cards.map((c) => (
-            <ProgramCard key={c.title} {...c} />
+            <div key={c.title} className="w-[85%] shrink-0 sm:w-auto sm:shrink">
+              <ProgramCard {...c} />
+            </div>
           ))}
         </div>
       </div>
@@ -503,39 +519,50 @@ function Reviews() {
   const quotes = [
     {
       body: "A genuinely great experience — a warm atmosphere and Vandana ma'am's teaching stood out most.",
-      who: "Student review · Google",
+      who: "Student · Google",
     },
     {
       body: "Learning at V2Wings felt personal. I left every class with something I had actually made myself.",
-      who: "Student review · Google",
+      who: "Student · Google",
+    },
+    {
+      body: "Vandana ma'am corrects you right at the machine. You leave knowing exactly what you did.",
+      who: "Student · Google",
+    },
+    {
+      body: "Small batches, calm studio, real garments. Best decision I made this year.",
+      who: "Student · Google",
     },
   ];
+  const marqueeItems = [...quotes, ...quotes];
   return (
     <section id="reviews" className="scroll-mt-8 bg-ink text-canvas">
-      <div className="mx-auto px-5 py-20 sm:px-8">
-        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
+      <div className="mx-auto px-5 py-16 sm:px-8 sm:py-20">
+        <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] md:gap-10">
           <div>
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-blush">
               Student results
             </div>
-            <div className="mt-4 flex items-baseline gap-3">
-              <span className="font-mono text-6xl text-thread-gold">4.9</span>
+            <div className="mt-3 flex items-baseline gap-3">
+              <span className="font-mono text-5xl text-thread-gold sm:text-6xl">4.9</span>
               <span className="text-sm text-blush">/ 5 on Google</span>
             </div>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-blush/80">
-              Based on real reviews from students across Margao and South Goa.
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-blush/80">
+              Real reviews from students across Margao and South Goa.
             </p>
             <a
               href="https://www.google.com/search?q=V2Wings+Coaching+Margao"
               target="_blank"
               rel="noreferrer"
-              className="mt-6 inline-flex items-center gap-2 rounded-full border border-blush/40 px-4 py-2 text-xs text-canvas hover:border-thread-gold hover:text-thread-gold"
+              className="mt-5 inline-flex items-center gap-2 rounded-full border border-blush/40 px-4 py-2 text-xs text-canvas hover:border-thread-gold hover:text-thread-gold"
             >
-              Read reviews on Google →
+              Read on Google →
             </a>
           </div>
-          <div className="grid gap-6">
-            {quotes.map((q, i) => (
+
+          {/* Desktop: stacked quotes */}
+          <div className="hidden gap-6 md:grid">
+            {quotes.slice(0, 2).map((q, i) => (
               <figure key={i} className="border-l-2 border-thread-gold pl-5">
                 <blockquote className="font-display text-2xl leading-snug text-canvas sm:text-3xl">
                   "{q.body}"
@@ -548,7 +575,26 @@ function Reviews() {
           </div>
         </div>
 
-        <div className="mt-16">
+        {/* Mobile: sideways marquee */}
+        <div className="reviews-marquee-wrap mt-8 -mx-5 overflow-hidden md:hidden">
+          <div className="reviews-marquee">
+            {marqueeItems.map((q, i) => (
+              <figure
+                key={i}
+                className="w-[78vw] shrink-0 border-l-2 border-thread-gold pl-4"
+              >
+                <blockquote className="font-display text-lg leading-snug text-canvas">
+                  "{q.body}"
+                </blockquote>
+                <figcaption className="mt-3 font-mono text-[10px] tracking-widest text-blush/70">
+                  {q.who}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-14 sm:mt-16">
           <div className="mb-4 font-mono text-[11px] uppercase tracking-widest text-blush">
             Student work
           </div>
@@ -557,7 +603,7 @@ function Reviews() {
               <div key={n} className="relative aspect-[3/4] overflow-hidden rounded-sm bg-blush/20">
                 <UploadPlaceholder
                   dark
-                  label={`UPLOAD: student gallery photo ${n}`}
+                  label={`UPLOAD: student photo ${n}`}
                 />
               </div>
             ))}

@@ -134,8 +134,49 @@
 .tape-mark.long { width: 18px; }
 .tape-mark.short { width: 10px; opacity: 0.2; }
 
+/* Hero background crossfade */
+.hero-bg-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  animation: hero-fade 30s infinite;
+  will-change: opacity, transform;
+}
+@keyframes hero-fade {
+  0%, 16% { opacity: 0; transform: scale(1.06); }
+  4%, 20% { opacity: 0.55; transform: scale(1.03); }
+  22%, 36% { opacity: 0.55; transform: scale(1.0); }
+  40%, 100% { opacity: 0; transform: scale(1.0); }
+}
+
+/* Reviews marquee (mobile) */
+.reviews-marquee {
+  display: flex;
+  gap: 1rem;
+  animation: reviews-scroll 32s linear infinite;
+  width: max-content;
+}
+.reviews-marquee-wrap:hover .reviews-marquee { animation-play-state: paused; }
+@keyframes reviews-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Horizontal snap scroller */
+.snap-x-scroll {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.snap-x-scroll::-webkit-scrollbar { display: none; }
+.snap-x-scroll > * { scroll-snap-align: center; }
+
 @media (prefers-reduced-motion: reduce) {
   .stitch-divider { animation: none; transform: none; }
   .ticker-track { animation: none; }
+  .hero-bg-slide { animation: none; opacity: 0.4; }
+  .reviews-marquee { animation: none; }
   * { scroll-behavior: auto !important; }
 }
