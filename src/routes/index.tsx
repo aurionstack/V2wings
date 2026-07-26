@@ -519,39 +519,50 @@ function Reviews() {
   const quotes = [
     {
       body: "A genuinely great experience — a warm atmosphere and Vandana ma'am's teaching stood out most.",
-      who: "Student review · Google",
+      who: "Student · Google",
     },
     {
       body: "Learning at V2Wings felt personal. I left every class with something I had actually made myself.",
-      who: "Student review · Google",
+      who: "Student · Google",
+    },
+    {
+      body: "Vandana ma'am corrects you right at the machine. You leave knowing exactly what you did.",
+      who: "Student · Google",
+    },
+    {
+      body: "Small batches, calm studio, real garments. Best decision I made this year.",
+      who: "Student · Google",
     },
   ];
+  const marqueeItems = [...quotes, ...quotes];
   return (
     <section id="reviews" className="scroll-mt-8 bg-ink text-canvas">
-      <div className="mx-auto px-5 py-20 sm:px-8">
-        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
+      <div className="mx-auto px-5 py-16 sm:px-8 sm:py-20">
+        <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] md:gap-10">
           <div>
             <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-blush">
               Student results
             </div>
-            <div className="mt-4 flex items-baseline gap-3">
-              <span className="font-mono text-6xl text-thread-gold">4.9</span>
+            <div className="mt-3 flex items-baseline gap-3">
+              <span className="font-mono text-5xl text-thread-gold sm:text-6xl">4.9</span>
               <span className="text-sm text-blush">/ 5 on Google</span>
             </div>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-blush/80">
-              Based on real reviews from students across Margao and South Goa.
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-blush/80">
+              Real reviews from students across Margao and South Goa.
             </p>
             <a
               href="https://www.google.com/search?q=V2Wings+Coaching+Margao"
               target="_blank"
               rel="noreferrer"
-              className="mt-6 inline-flex items-center gap-2 rounded-full border border-blush/40 px-4 py-2 text-xs text-canvas hover:border-thread-gold hover:text-thread-gold"
+              className="mt-5 inline-flex items-center gap-2 rounded-full border border-blush/40 px-4 py-2 text-xs text-canvas hover:border-thread-gold hover:text-thread-gold"
             >
-              Read reviews on Google →
+              Read on Google →
             </a>
           </div>
-          <div className="grid gap-6">
-            {quotes.map((q, i) => (
+
+          {/* Desktop: stacked quotes */}
+          <div className="hidden gap-6 md:grid">
+            {quotes.slice(0, 2).map((q, i) => (
               <figure key={i} className="border-l-2 border-thread-gold pl-5">
                 <blockquote className="font-display text-2xl leading-snug text-canvas sm:text-3xl">
                   "{q.body}"
@@ -564,7 +575,26 @@ function Reviews() {
           </div>
         </div>
 
-        <div className="mt-16">
+        {/* Mobile: sideways marquee */}
+        <div className="reviews-marquee-wrap mt-8 -mx-5 overflow-hidden md:hidden">
+          <div className="reviews-marquee">
+            {marqueeItems.map((q, i) => (
+              <figure
+                key={i}
+                className="w-[78vw] shrink-0 border-l-2 border-thread-gold pl-4"
+              >
+                <blockquote className="font-display text-lg leading-snug text-canvas">
+                  "{q.body}"
+                </blockquote>
+                <figcaption className="mt-3 font-mono text-[10px] tracking-widest text-blush/70">
+                  {q.who}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-14 sm:mt-16">
           <div className="mb-4 font-mono text-[11px] uppercase tracking-widest text-blush">
             Student work
           </div>
@@ -573,7 +603,7 @@ function Reviews() {
               <div key={n} className="relative aspect-[3/4] overflow-hidden rounded-sm bg-blush/20">
                 <UploadPlaceholder
                   dark
-                  label={`UPLOAD: student gallery photo ${n}`}
+                  label={`UPLOAD: student photo ${n}`}
                 />
               </div>
             ))}
