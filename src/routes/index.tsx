@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import logo from "@/assets/v2wings-logo.jpg.asset.json";
+import trainer from "@/assets/master-trainer.png.asset.json";
 import hero1 from "@/assets/hero/hero1.jpg.asset.json";
 import hero2 from "@/assets/hero/hero2.jpg.asset.json";
 import hero3 from "@/assets/hero/hero3.jpg.asset.json";
@@ -487,8 +488,13 @@ function Trainer() {
     <section id="trainer" className="scroll-mt-8">
       <div className="mx-auto grid gap-10 px-5 py-20 sm:px-8 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         <div className="relative">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-blush">
-            <UploadPlaceholder label="UPLOAD: portrait of Vandana ma'am at the sewing table" />
+          <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-ink">
+            <img
+              src={trainer.url}
+              alt="Vandana ma'am, master trainer at V2Wings Coaching"
+              className="h-full w-full object-cover object-top"
+              loading="lazy"
+            />
           </div>
           <div className="absolute -bottom-3 left-3 rounded-full bg-thread-gold px-3 py-1 font-mono text-[10px] tracking-widest text-ink">
             MASTER · TRAINER
