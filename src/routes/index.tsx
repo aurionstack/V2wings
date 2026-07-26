@@ -7,6 +7,10 @@ import hero2 from "@/assets/hero/hero2.jpg.asset.json";
 import hero3 from "@/assets/hero/hero3.jpg.asset.json";
 import hero4 from "@/assets/hero/hero4.jpg.asset.json";
 import hero5 from "@/assets/hero/hero5.jpg.asset.json";
+import studentWork1 from "@/assets/student-work/student-work1.jpg.asset.json";
+import studentWork2 from "@/assets/student-work/student-work2.jpg.asset.json";
+import studentWork3 from "@/assets/student-work/student-work3.jpg.asset.json";
+import studentWork4 from "@/assets/student-work/student-work4.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
