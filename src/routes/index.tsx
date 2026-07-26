@@ -59,6 +59,7 @@ function Index() {
         <StitchDivider />
         <Why />
         <Programs />
+        <Work />
         <StitchDivider gold />
         <Trainer />
         <Reviews />
