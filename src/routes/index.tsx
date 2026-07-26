@@ -615,11 +615,18 @@ function Reviews() {
             Student work
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {[1, 2, 3, 4].map((n) => (
-              <div key={n} className="relative aspect-[3/4] overflow-hidden rounded-sm bg-blush/20">
-                <UploadPlaceholder
-                  dark
-                  label={`UPLOAD: student photo ${n}`}
+            {STUDENT_WORK.map((src, i) => (
+              <div
+                key={i}
+                className="relative aspect-[3/4] overflow-hidden rounded-sm bg-blush/20"
+              >
+                <img
+                  src={src}
+                  alt={`Student garment work ${i + 1}: neckline and bodice detail`}
+                  loading="lazy"
+                  width={1024}
+                  height={1024}
+                  className="h-full w-full object-cover"
                 />
               </div>
             ))}
